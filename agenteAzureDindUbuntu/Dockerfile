@@ -9,14 +9,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     curl \
     gnupg \
     lsb-release \
-    apt-utils \
     dnsutils \
     wget \
     git \
-    zip \
-    unzip \
-    iputils-ping \
-    jq \
     software-properties-common \
     sudo
 
