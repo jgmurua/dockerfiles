@@ -15,6 +15,6 @@ docker run -it --privileged --name ubuntu-dind docker
 # Correr docker en docker buildeando una imagen multi-arquitectura
 docker run -it --privileged --name ubuntu-dind docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t someTag .
 
-´´´
+```
 
 
