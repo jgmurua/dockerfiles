@@ -3,7 +3,7 @@ USER root
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/Argentina/Buenos_Aires
 # install packages and clean up
-RUN apt-get update && apt-get install ca-certificates curl apt-transport-https lsb-release gnupg software-properties-common awscli mariadb-client golang sudo wget tmux zip unzip vim git jq python3.10  -y
+RUN apt-get update && apt-get install ca-certificates curl apt-transport-https lsb-release gnupg software-properties-common awscli mariadb-client golang sudo wget tmux zip unzip vim git jq python3.10 libnss3 -y
 
 # Instala Docker y Buildx
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
@@ -31,7 +31,7 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 RUN curl -sSL https://sdk.cloud.google.com | bash
 ENV PATH $PATH:/root/google-cloud-sdk/bin
 # instala terraform
-#RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
+RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
 # workdir y colores
 RUN mkdir -p /workdir && echo "cd /workdir " >> /root/.bashrc && echo  " PS1='\[\033[01;32m\]Bash\[\033[01;30m\]: ' " >> /root/.bashrc
 #agrega sshkey que esten en la carpeta ssh
@@ -48,7 +48,17 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/s
 RUN curl -fsSL -o kubelogin-linux-arm64.zip "https://github.com/Azure/kubelogin/releases/download/v0.0.30/kubelogin-linux-arm64.zip" && unzip -j kubelogin-linux-arm64.zip bin/linux_arm64/kubelogin -d /usr/local/bin/ && chmod +x /usr/local/bin/kubelogin && rm kubelogin-linux-arm64.zip
 # kubeconfig root
 RUN mkdir -p /root/.kube && chmod 700 /root/.kube 
-# alias start docker
-#RUN echo "alias algo="" >> /root/.bashrc
+# install lens 
+RUN apt-get install libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libgbm1 libnss3  libasound2  libnotify4 libxss1 xdg-utils libsecret-1-0 -y
+RUN wget https://github.com/MuhammedKalkan/OpenLens/releases/download/v6.5.2-309/OpenLens-6.5.2-309.amd64.deb && dpkg -i OpenLens-6.5.2-309.amd64.deb && rm OpenLens-6.5.2-309.amd64.deb
+# alias start lens
+RUN echo "alias lens=\"nohup sh -c 'open-lens --no-sandbox &'\"" >> /root/.bashrc
+
+##Display
+ENV DISPLAY=host.docker.internal:0.0
+
+# iniciar docker y lens
+#CMD nohup sh -c 'open-lens --no-sandbox &' && sh -c 'dockerd -H unix:///var/run/docker.sock & until docker info >/dev/null 2>&1; do :; done; bash "$@"'
 
 CMD sh -c 'dockerd -H unix:///var/run/docker.sock & until docker info >/dev/null 2>&1; do :; done; bash "$@"'
+
