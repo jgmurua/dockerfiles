@@ -6,24 +6,24 @@ docker run -d --restart=always --publish 3129:3129  --publish 3128:3128  --volum
 ```
 
 ## copiar el cerificado desde el contenedor
+``` bash
+container_id=$(docker ps -q -f "ancestor=squid")
+docker cp $container_id:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem squid-self-signed.pem
+```
 
-docker ps -q -f "ancestor=squid"
+ ## para docker
 
+``` bash
+docker cp $container_id:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem ca.pem
+docker cp $container_id:/usr/local/squid/etc/ssl_cert/squid-self-signed.key key.pem
+docker cp $container_id:/usr/local/squid/etc/ssl_cert/squid-self-signed.crt crt.pem
 
-docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem squid-self-signed.pem
-
-para docker
-
-docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem ca.pem
-docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.key key.pem
-docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.crt crt.pem
-
-setear variables de entorno para docker donde esten ca.pem key.pem crt.pem
+# setear variables de entorno para docker donde esten ca.pem key.pem crt.pem
 
 SET DOCKER_CERT_PATH=C:\................\squid
 SET DOCKER_TLS_CERTDIR=C::\................\squid
 SET DOCKER_TLS_VERIFY=0
-
+```
 
 
 
