@@ -37,3 +37,11 @@ set "variable=/%drive%%variable%"
 REM aqui ejecuta el container con mi entorno de trabajo personalizado
 
 docker run -ti -d --privileged --rm --publish 3129:3129  --publish 3128:3128 -v %variable%/squid/cache:/var/spool/squid squid
+$container_id = "$(docker ps -q -f 'ancestor=squid')"
+REM copia el certificado generado por el container a la carpeta local
+docker cp $container_id:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem squid-self-signed.pem
+REM copia los certificados para docker
+docker cp $container_id:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem ca.pem
+docker cp $container_id:/usr/local/squid/etc/ssl_cert/squid-self-signed.key key.pem
+docker cp $container_id:/usr/local/squid/etc/ssl_cert/squid-self-signed.crt crt.pem
+

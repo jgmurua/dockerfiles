@@ -6,7 +6,26 @@ docker run -d --restart=always --publish 3129:3129  --publish 3128:3128  --volum
 ```
 
 ## copiar el cerificado desde el contenedor
-docker cp c3cb5a80057f:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem squid-self-signed.pem
+
+docker ps -q -f "ancestor=squid"
+
+
+docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem squid-self-signed.pem
+
+para docker
+
+docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem ca.pem
+docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.key key.pem
+docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.crt crt.pem
+
+setear variables de entorno para docker donde esten ca.pem key.pem crt.pem
+
+SET DOCKER_CERT_PATH=C:\................\squid
+SET DOCKER_TLS_CERTDIR=C::\................\squid
+SET DOCKER_TLS_VERIFY=0
+
+
+
 
 ## importar Certificado en firefox
 si se utiliza en navegadores sin antes agregar el certificado dara error de MITM
