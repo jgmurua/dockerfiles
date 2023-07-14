@@ -1,0 +1,3 @@
+squid/cache/0*  # omitir cache folder
+squid/cache/swap.state  # omitir swap.state
+*.pem           # omitir *.pem
