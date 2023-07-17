@@ -1,5 +1,10 @@
 # Utilizamos una imagen base de Ubuntu
 FROM ubuntu:latest
+ARG country_code="AR"
+ARG country="Argentina"
+ARG statename="Buenos Aires"
+ARG namecert="some name"
+ARG email="youremail@.com"
 
 # Actualizamos los paquetes del sistema e instalamos las dependencias necesarias
 RUN apt-get update && apt-get install -y \
@@ -29,7 +34,7 @@ RUN sed -i '/\[ v3_ca \]/a keyUsage = cRLSign, keyCertSign' /etc/ssl/openssl.cnf
 RUN mkdir /tmp/ssl_cert
 WORKDIR /tmp/ssl_cert
 RUN openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -extensions v3_ca -keyout squid-self-signed.key -out squid-self-signed.crt \
-    -subj "/C=AR/ST=Argentina/L=Buenos Aires/O=MyProxy/OU=Squid/CN=Juan Gabriel Murua/emailAddress=jgmurua@gmail.com" \
+    -subj "/C=${country_code}/ST=${country}/L=${statename}/O=MyProxy/OU=Squid/CN=${namecert}/emailAddress=S{email}" \
     && openssl x509 -in squid-self-signed.crt -outform DER -out squid-self-signed.der \
     && openssl x509 -in squid-self-signed.crt -outform PEM -out squid-self-signed.pem \
     && openssl dhparam -outform PEM -out squid-self-signed_dhparam.pem 2048

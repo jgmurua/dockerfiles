@@ -1,12 +1,13 @@
-# squid proxy cache
+# Squid proxy cache
 
 ``` bash
 docker build -t squid .
 docker run -d --restart=always --publish 3129:3129  --publish 3128:3128  --volume $(pwd)/squid/cache:/var/spool/squid   squid
 ```
 
-## copiar el cerificado desde el contenedor
+## Copiar el certificado desde el contenedor
 
+``` bash
 docker ps -q -f "ancestor=squid"
 
 
@@ -18,28 +19,24 @@ docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.pem ca.pe
 docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.key key.pem
 docker cp 8a2b1f8026c6:/usr/local/squid/etc/ssl_cert/squid-self-signed.crt crt.pem
 
-setear variables de entorno para docker donde esten ca.pem key.pem crt.pem
-
-SET DOCKER_CERT_PATH=C:\................\squid
-SET DOCKER_TLS_CERTDIR=C::\................\squid
-SET DOCKER_TLS_VERIFY=0
+```
 
 
+## Setear estas variables de entorno para que docker encuentre ca.pem key.pem crt.pem
 
+``` bash
 
-## importar Certificado en firefox
-si se utiliza en navegadores sin antes agregar el certificado dara error de MITM
+SET DOCKER_CERT_PATH="C:\where_the_certs_are\proxy-cache"
+SET DOCKER_TLS_CERTDIR="C:\where_the_certs_are\proxy-cache"
+SET DOCKER_TLS_VERIFY=1
+SET HTTP_PROXY="http://192.168.100.16:3128"
+SET HTTPS_PROXY="http://192.168.100.16:3129"
+SET NO_PROXY="localhost"
 
+```
 
-![agregar certificado](./11.png)
-
-
-
-![agregar certificado](./12.png)
-
-
-
-![seleccionar proxy](./13.png)
+## Importar Certificado
+Si se utiliza el navegador sin antes agregar el certificado dara error de MITM
 
 
 ![seleccionar proxy](./14.png)
@@ -55,6 +52,7 @@ puertos por defecto
 
 Basado en
 https://rasika90.medium.com/how-i-saved-tons-of-gbs-with-https-caching-41550b4ada8a
+
 
 
 
