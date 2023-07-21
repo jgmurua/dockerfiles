@@ -1,5 +1,7 @@
 # Squid proxy cache
 
+Cache de navegacion web con squid proxy cache, con certificado auto firmado para https 
+
 ``` bash
 docker build -t squid .
 docker run -d --restart=always --publish 3129:3129  --publish 3128:3128  --volume $(pwd)/squid/cache:/var/spool/squid   squid
@@ -51,6 +53,7 @@ puertos por defecto
 3128 http
 
 Basado en
+https://github.com/sameersbn/docker-squid
 https://rasika90.medium.com/how-i-saved-tons-of-gbs-with-https-caching-41550b4ada8a
 
 
