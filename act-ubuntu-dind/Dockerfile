@@ -56,6 +56,14 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
 # install google cloud sdk
 RUN curl -sSL https://sdk.cloud.google.com | bash && PATH=$PATH:/root/google-cloud-sdk/bin
 
+# instala azure cli
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+# instala aws cli
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install
+
 # instala terraform
 RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
 
