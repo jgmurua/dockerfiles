@@ -71,7 +71,7 @@ ENV JAVA_HOME="/usr/lib/jvm/java-${JDK_VERSION}-openjdk-amd64"
 
 #CMD sh -c 'dockerd -H unix:///var/run/docker.sock & until docker info >/dev/null 2>&1; do :; done; docker "$@"'
 CMD sh -c "dockerd -H unix:///var/run/docker.sock & until docker info >/dev/null 2>&1; do :; done; sleep 5 && \
-    echo 'name=$TEAMCITY_AGENT_NAME' > /opt/teamcity/conf/buildAgent.properties && \
-    echo 'serverUrl=$TEAMCITY_SERVER_URL' >> /opt/teamcity/conf/buildAgent.properties && \
-    chmod +x /opt/teamcity/bin/agent.sh && \
-    /opt/teamcity/bin/agent.sh run; tail -f /dev/null"
+    echo 'name=$TEAMCITY_AGENT_NAME' > /opt/teamcity/buildAgent/conf/buildAgent.properties && \
+    echo 'serverUrl=$TEAMCITY_SERVER_URL' >> /opt/teamcity/buildAgent/conf/buildAgent.properties && \
+    chmod +x /opt/teamcity/buildAgent/bin/agent.sh && \
+    /opt/teamcity/buildAgent/bin/agent.sh run; tail -f /dev/null"
