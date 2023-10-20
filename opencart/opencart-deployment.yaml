@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opencart-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opencart
+  template:
+    metadata:
+      labels:
+        app: opencart
+    spec:
+      containers:
+        - name: opencart
+          image: jgmurua/opencart:latest  # Reemplaza con tu nombre de usuario y nombre de la imagen de Docker
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: opencart-data
+              mountPath: /var/www/html
+      volumes:
+        - name: opencart-data
+          persistentVolumeClaim:
+            claimName: opencart-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: opencart-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi  # Ajusta el tamaño del almacenamiento según tus necesidades
