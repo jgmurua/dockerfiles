@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-action-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github-action-app
+  template:
+    metadata:
+      labels:
+        app: github-action-app
+    spec:
+      containers:
+        - name: github-action-container
+          image: jgmurua/agentegithubactiondindubuntu:latest  
+          env:
+            - name: GH_TOKEN
+              value: '***'  # Tu token de GitHub
+            - name: GH_OWNER
+              value: 'jgmurua'  # El propietario del repositorio de GitHub
+            - name: GH_REPOSITORY
+              value: '***'  # El nombre del repositorio de GitHub
+          securityContext:
+            privileged: true  # Esto habilita privilegios como en "--privileged" en Docker
