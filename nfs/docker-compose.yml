@@ -1,0 +1,19 @@
+version: '3'
+services:
+  nfs-server:
+    image: nfshome
+    volumes:
+      - ./nfs:/mnt/nfs_share
+    privileged: true
+    restart: always
+    ports:
+      - "2049:2049"
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nfs:/usr/share/nginx/html
+    ports:
+      - "8870:80"
+    depends_on:
+      - nfs-server

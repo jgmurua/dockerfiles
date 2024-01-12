@@ -1,0 +1,217 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: magento
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: magento
+  template:
+    metadata:
+      labels:
+        app: magento
+    spec:
+      containers:
+        - name: magento
+          image: docker.io/bitnami/magento:2
+          ports:
+            - containerPort: 8080
+            - containerPort: 8443
+          env:
+            - name: MAGENTO_HOST
+              value: localhost
+            - name: MAGENTO_DATABASE_HOST
+              value: mariadb
+            - name: MAGENTO_DATABASE_PORT_NUMBER
+              value: "3306"
+            - name: MAGENTO_DATABASE_USER
+              value: bn_magento
+            - name: MAGENTO_DATABASE_NAME
+              value: bitnami_magento
+            - name: ELASTICSEARCH_HOST
+              value: elasticsearch
+            - name: ELASTICSEARCH_PORT_NUMBER
+              value: "9200"
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+          volumeMounts:
+            - name: magento-data
+              mountPath: /bitnami/magento
+      volumes:
+        - name: magento-data
+          persistentVolumeClaim:
+            claimName: magento-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: docker.io/bitnami/mariadb:10.6
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: MARIADB_USER
+              value: bn_magento
+            - name: MARIADB_DATABASE
+              value: bitnami_magento
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /bitnami/mariadb
+      volumes:
+        - name: mariadb-data
+          persistentVolumeClaim:
+            claimName: mariadb-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - name: elasticsearch
+          image: docker.io/bitnami/elasticsearch:7
+          volumeMounts:
+            - name: elasticsearch-data
+              mountPath: /bitnami/elasticsearch/data
+      volumes:
+        - name: elasticsearch-data
+          persistentVolumeClaim:
+            claimName: elasticsearch-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: magento-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elasticsearch-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: 3306
+  selector:
+    app: mariadb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+spec:
+  ports:
+    - name: http
+      port: 9200
+      targetPort: 9200
+  selector:
+    app: elasticsearch
+---
+#proxy to access magento
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: magento-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: magento-proxy
+  template:
+    metadata:
+      labels:
+        app: magento-proxy
+    spec:
+      containers:
+        - name: magento-proxy
+          image: docker.io/bitnami/nginx:1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NGINX_HTTP_PORT_NUMBER
+              value: "8080"
+            - name: NGINX_HTTPS_PORT_NUMBER
+              value: "8443"
+          volumeMounts:
+            - name: magento-proxy-data
+              mountPath: /bitnami/nginx
+      volumes:
+        - name: magento-proxy-data
+          persistentVolumeClaim:
+            claimName: magento-proxy-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: magento-proxy-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: magento-proxy
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30015
+  selector:
+    app: magento-proxy

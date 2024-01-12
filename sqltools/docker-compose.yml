@@ -1,0 +1,20 @@
+version: "3.3"
+# por ahora solo hay soporte para linux x64 
+services:
+
+  workbench:
+    image: jgmurua/sqltools:latest 
+    #image: lscr.io/linuxserver/mysql-workbench:latest
+    container_name: workbench
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Argentina/Buenos_Aires
+    volumes:
+      - ./workbench/config:/config
+      - ./workbench/data:/data
+    ports:
+      - 3000:3000
+    cap_add:
+      - IPC_LOCK
+    restart: unless-stopped
