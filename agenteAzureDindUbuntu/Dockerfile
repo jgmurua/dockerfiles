@@ -1,5 +1,5 @@
-# Usa Ubuntu 22.10 como base
-FROM ubuntu:22.10
+# Usa Ubuntu 23.10 como base
+FROM ubuntu:23.10
 
 # Instala los paquetes necesarios
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
@@ -7,6 +7,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-transport-https \
     ca-certificates \
     curl \
+    jq \
     gnupg \
     lsb-release \
     dnsutils \
