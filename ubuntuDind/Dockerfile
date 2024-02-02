@@ -1,5 +1,5 @@
 # Usa la imagen base con soporte multiarch
-FROM --platform=$BUILDPLATFORM ubuntu:22.10
+FROM --platform=$BUILDPLATFORM ubuntu:23.10
 USER root
 
 # Instala los paquetes necesarios
@@ -41,4 +41,8 @@ RUN docker buildx create --name mybuilder && \
 # Cambia el almacenamiento de Docker a 'vfs' (requerido para ejecutar Docker-in-Docker)
 RUN echo '{ "storage-driver": "vfs", "log-level": "fatal" }' > /etc/docker/daemon.json
 
-CMD sh -c 'dockerd -H unix:///var/run/docker.sock & until docker info >/dev/null 2>&1; do :; done; docker "$@"'
+# for cli use
+# CMD sh -c 'dockerd -H unix:///var/run/docker.sock & until docker info >/dev/null 2>&1; do :; done; docker "$@"'
+
+# ejecuta el demonio de Docker en segundo plano y espera a que esté listo verificando la información del sistema cada 5 segundos
+CMD sh -c 'dockerd -H unix:///var/run/docker.sock & until docker info >/dev/null 2>&1; do sleep 5; done;'

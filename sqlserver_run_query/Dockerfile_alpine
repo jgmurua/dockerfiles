@@ -1,0 +1,29 @@
+# Utilizar una imagen de Alpine Linux v3.14 como base
+FROM alpine:3.14
+
+# Instalar dependencias y descargar paquetes de Microsoft
+RUN apk --no-cache add curl bash openssl gnupg && \
+    curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_17.6.1.1-1_amd64.apk && \
+    curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_17.6.1.1-1_amd64.apk && \
+    curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_17.6.1.1-1_amd64.sig && \
+    curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_17.6.1.1-1_amd64.sig && \
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --import - && \
+    gpg --verify msodbcsql17_17.6.1.1-1_amd64.sig msodbcsql17_17.6.1.1-1_amd64.apk && \
+    gpg --verify mssql-tools_17.6.1.1-1_amd64.sig mssql-tools_17.6.1.1-1_amd64.apk && \
+    apk add --allow-untrusted msodbcsql17_17.6.1.1-1_amd64.apk mssql-tools_17.6.1.1-1_amd64.apk && \
+    rm -f msodbcsql17_17.6.1.1-1_amd64.apk mssql-tools_17.6.1.1-1_amd64.apk msodbcsql17_17.6.1.1-1_amd64.sig mssql-tools_17.6.1.1-1_amd64.sig && \
+    apk del gnupg
+
+# Copiar el script Bash para ejecutar SQL
+COPY sql_runner.sh /sql_runner.sh
+RUN chmod +x /sql_runner.sh
+
+# Establecer variables de entorno para la conexión a SQL Server
+ENV SQL_SERVER_HOST server
+ENV SQL_DATABASE dbname
+ENV SQL_USER user
+ENV SQL_PASSWORD pass
+ENV QUERY query
+
+# Establecer el punto de entrada para ejecutar el script con Bash
+CMD ["/sql_runner.sh"]

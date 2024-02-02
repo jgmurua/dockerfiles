@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+<menu id="root-menu" label="MENU">
+<item label="xterm"><action name="Execute"><command>/usr/bin/xterm</command></action></item>
+<item label="Double Commander" ><action name="Execute"><command>/usr/bin/doublecmd</command></action></item>
+<item label="kate" ><action name="Execute"><command>/usr/bin/kate</command></action></item>
+<item label="Terminal" ><action name="Execute"><command>/usr/bin/gnome-terminal</command></action></item>
+<item label="DBeaver" ><action name="Execute"><command>/usr/bin/dbeaver</command></action></item>
+<item label="Minecraft" ><action name="Execute"><command>/usr/bin/minecraft-launcher</command></action></item>
+</menu>
+</openbox_menu>
+
