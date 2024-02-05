@@ -1,6 +1,5 @@
 # Build stage
 FROM node:20 AS build
-MAINTAINER SD Elements
 
 ENV PKG_JSON_URL=https://raw.githubusercontent.com/sdelements/lets-chat/master/package.json \
     TAR_GZ_URL=https://github.com/sdelements/lets-chat/archive/master.tar.gz \
@@ -32,7 +31,6 @@ RUN chown node:node uploads \
 
 # Production stage
 FROM node:20-alpine
-MAINTAINER SD Elements
 
 ENV LCB_DATABASE_URI=mongodb://mongo/letschat \
     LCB_HTTP_HOST=0.0.0.0 \

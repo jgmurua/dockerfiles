@@ -1,5 +1,5 @@
 # Usa la imagen base con soporte multiarch
-FROM --platform=$BUILDPLATFORM ubuntu:22.10
+FROM --platform=$BUILDPLATFORM ubuntu:23.10
 USER root
 
 ARG GITEA_INSTANCE_URL

@@ -8,7 +8,7 @@ docker build -t agentegithubactiondindubuntu .
 
 docker run -it --rm --name agentegithubactiondindubuntu agentegithubactiondindubuntu 
 
-docker build --build-arg RUNNER_VERSION=2.311.0 --tag agentegithubactiondindubuntu .
+docker build --build-arg RUNNER_VERSION=2.312.0 --tag agentegithubactiondindubuntu .
 
 docker run -e GH_TOKEN='myPatToken' -e GH_OWNER='orgName' -e GH_REPOSITORY='repoName' -d image-name
 

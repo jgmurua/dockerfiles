@@ -1,13 +1,13 @@
-# Usa Ubuntu 22.10 como base
+# Usa Ubuntu 23.10 como base
 FROM ubuntu:23.10
 USER root
-ARG RUNNER_VERSION="2.311.0"
+ARG RUNNER_VERSION="2.312.0"
 ENV DEBIAN_FRONTEND=noninteractive
 
 LABEL Author=""
 LABEL Email=""
 LABEL GitHub=""
-LABEL BaseImage="ubuntu:22.10"
+LABEL BaseImage="ubuntu:23.10"
 LABEL RunnerVersion=${RUNNER_VERSION}
 
 
