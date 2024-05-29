@@ -1,5 +1,5 @@
 # Usa la imagen base con soporte multiarch
-FROM --platform=$BUILDPLATFORM ubuntu:23.10
+FROM --platform=$BUILDPLATFORM ubuntu:24.04
 USER root
 
 ARG GITEA_INSTANCE_URL
@@ -77,4 +77,4 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/s
 RUN mkdir -p /root/.kube && chmod 700 /root/.kube 
 
 
-CMD sh -c 'dockerd -H unix:///var/run/docker.sock & until docker info >/dev/null 2>&1; do :; done; sleep 5; /usr/local/bin/act_runner register --instance $GITEA_INSTANCE_URL --token $GITEA_RUNNER_REGISTRATION_TOKEN --no-interactive --name k8s-act --labels ubuntu-22.04:host,ubuntu-latest; /usr/local/bin/act_runner daemon; sleep 999999999999'
+CMD sh -c 'dockerd -H unix:///var/run/docker.sock & until docker info >/dev/null 2>&1; do :; done; sleep 5; /usr/local/bin/act_runner register --instance $GITEA_INSTANCE_URL --token $GITEA_RUNNER_REGISTRATION_TOKEN --no-interactive --name k8s-act --labels ubuntu-24.04:host,ubuntu-latest; /usr/local/bin/act_runner daemon; sleep 999999999999'
