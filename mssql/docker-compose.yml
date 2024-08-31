@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrongPassword!123
+    ports:
+      - "1433:1433"
+
+  sql-loader:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: sql-loader
+    depends_on:
+      - sqlserver
+    entrypoint: /bin/bash
+    tty: true
+    volumes:
+      - ./init-scripts:/var/opt/mssql/scripts
+    environment:
+      - SQLCMDPASSWORD=YourStrongPassword!123
+    command: >
+      -c "sleep 60 && /opt/mssql-tools/bin/sqlcmd -C -S sqlserver -U SA -P YourStrongPassword!123 -i /var/opt/mssql/scripts/init-db.sql"
+
+  sqlclient:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: sqlclient
+    depends_on:
+      - sql-loader
+    entrypoint: /bin/bash
+    tty: true
+    environment:
+      - SQLCMDPASSWORD=YourStrongPassword!123
+    command: >
+      -c "sleep 60 && /opt/mssql-tools/bin/sqlcmd -C -S sqlserver -U SA -P YourStrongPassword!123 -Q 'SELECT name FROM sys.databases'"
