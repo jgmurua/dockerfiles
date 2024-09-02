@@ -33,6 +33,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     zip \
     && rm -rf /var/lib/apt/lists/*
 
+# instalar nodejs y npm
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm@latest
 # DOCKER
 
 # Añade la clave GPG de Docker
