@@ -30,6 +30,7 @@ RUN apt-get update && \
     netcat-openbsd \
     unzip \
     zip \
+    dumb-init \
     && rm -rf /var/lib/apt/lists/*
 
 # Instala Node.js y npm
@@ -62,5 +63,5 @@ WORKDIR /etc/gitlab-runner
 COPY start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
-# Define el entrypoint
-ENTRYPOINT ["/usr/local/bin/start.sh"]
+# Define el entrypoint usando dumb-init
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "/usr/local/bin/start.sh"]
