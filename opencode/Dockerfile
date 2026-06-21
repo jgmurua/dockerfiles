@@ -82,6 +82,9 @@ COPY opencode.json /root/.config/opencode/opencode.json
 RUN test -f /root/.config/opencode/skills/platform-engineer/SKILL.md \
     && chmod +x /root/.config/opencode/skills/platform-engineer/scripts/*.sh || true
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 WORKDIR /workspace
 
-ENTRYPOINT ["opencode"]
+ENTRYPOINT ["docker-entrypoint.sh"]

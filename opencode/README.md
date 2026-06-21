@@ -27,8 +27,38 @@ docker run -it \
 
 ## Entrypoint
 
-El contenedor ejecuta `opencode` directamente. Puedes pasar argumentos:
+El contenedor ejecuta `opencode` por defecto. Si pasas un comando como `bash`,
+ejecuta ese comando en su lugar:
+
+```bash
+docker run -it opencode-cli bash
+```
+
+Puedes pasar argumentos a opencode:
 
 ```bash
 docker run -it opencode-cli --help
+```
+
+## Persistir datos de OpenCode
+
+OpenCode guarda configuraciones, skills y datos en `~/.config/opencode`.
+Para conservarlos entre ejecuciones, monta un volumen:
+
+```bash
+docker run -it \
+  -v $(pwd):/workspace \
+  -v opencode-data:/root/.config/opencode \
+  -e OPENCODE_API_KEY=tu-api-key \
+  opencode-cli
+```
+
+También puedes bind-mount un directorio local:
+
+```bash
+docker run -it \
+  -v $(pwd):/workspace \
+  -v $HOME/.config/opencode:/root/.config/opencode \
+  -e OPENCODE_API_KEY=tu-api-key \
+  opencode-cli
 ```
