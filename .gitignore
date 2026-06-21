@@ -1,3 +1,106 @@
-squid/squid/cache/0*  # omitir cache folder
-squid/squid/cache/swap.state  # omitir swap.state
-*.pem           # omitir *.pem
+# Git
+.git
+.gitignore
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# OpenTofu
+.tofu/
+*.tofustate
+*.tofustate.*
+
+# AWS
+.aws/
+awscliv2.zip
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# Docker
+*.tar
+*.img
+docker-save/
+docker-export/
+
+# Build artifacts
+build/
+dist/
+bin/
+out/
+tmp/
+temp/
+
+# Go
+*.test
+coverage.out
+vendor/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-store/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+*.kubeconfig
+terraform.rc
+terraform.rc.json
+
+# Local config
+config.local.*
+settings.local.*
+
+# Helm
+helm/
+bin/helm
+
+# Terraform Switcher
+terraform-switcher/
+bin/tfswitch
+
+# Downloads
+downloads/
+artifacts/
