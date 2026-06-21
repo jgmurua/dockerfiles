@@ -1,5 +1,5 @@
 # Usa Ubuntu 24.04 como base
-FROM ubuntu:24.04
+FROM ubuntu:26:04
 USER root
 ARG RUNNER_VERSION="2.316.1"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 LABEL Author=""
 LABEL Email=""
 LABEL GitHub=""
-LABEL BaseImage="ubuntu:24.04"
+LABEL BaseImage="ubuntu:26:04"
 LABEL RunnerVersion=${RUNNER_VERSION}
 
 

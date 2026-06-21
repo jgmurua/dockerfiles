@@ -1,0 +1,44 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "*": "ask",
+    "skill": {
+      "*": "ask",
+      "platform-engineer": "allow"
+    },
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.tfvars": "ask",
+      "*.tfstate": "ask",
+      "*.tfstate.backup": "ask"
+    },
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "ls *": "allow",
+      "pwd": "allow",
+      "cat *": "allow",
+      "grep *": "allow",
+      "find *": "allow",
+      "kubectl get *": "allow",
+      "kubectl describe *": "allow",
+      "kubectl logs *": "allow",
+      "helm list*": "allow",
+      "helm status*": "allow",
+      "terraform fmt*": "allow",
+      "terraform validate*": "allow",
+      "terraform plan*": "ask",
+      "terraform apply*": "ask",
+      "terraform destroy*": "deny",
+      "kubectl delete *": "ask",
+      "helm uninstall *": "ask",
+      "rm *": "deny"
+    },
+    "external_directory": "ask"
+  }
+}

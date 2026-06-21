@@ -1,0 +1,16 @@
+{
+  "name": "platform-engineer",
+  "version": "1.0.0",
+  "description": "OpenCode Skill for Kubernetes, Terraform, Helm, observability, GitOps and SRE workflows.",
+  "entrypoint": "SKILL.md",
+  "recommended_install_paths": [
+    "~/.config/opencode/skills/platform-engineer",
+    ".opencode/skills/platform-engineer",
+    "~/.agents/skills/platform-engineer"
+  ],
+  "safe_defaults": {
+    "destructive_actions_require_confirmation": true,
+    "terraform_destroy": "deny",
+    "kubectl_delete_namespace": "deny"
+  }
+}

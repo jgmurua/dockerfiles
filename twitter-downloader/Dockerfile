@@ -1,5 +1,5 @@
 # Usa la imagen base de Python
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 # Instala yt-dlp desde el repositorio oficial y otros paquetes necesarios
 RUN apt-get update && apt-get install -y \

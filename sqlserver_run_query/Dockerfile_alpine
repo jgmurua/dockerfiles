@@ -1,5 +1,5 @@
 # Utilizar una imagen de Alpine Linux v3.14 como base
-FROM alpine:3.14
+FROM alpine:3.18
 
 # Instalar dependencias y descargar paquetes de Microsoft
 RUN apk --no-cache add curl bash openssl gnupg && \

@@ -1,5 +1,5 @@
 # Utilizar una imagen de Ubuntu 23.10 como base
-FROM ubuntu:23.10
+FROM ubuntu:26:04
 
 # Actualizar el sistema e instalar dependencias
 RUN apt-get update && \

@@ -1,5 +1,5 @@
 # Use Alpine Linux as the base image
-FROM alpine:latest
+FROM alpine:3.18
 
 # Cambiar el shell predeterminado a /bin/sh
 SHELL ["/bin/sh", "-c"]

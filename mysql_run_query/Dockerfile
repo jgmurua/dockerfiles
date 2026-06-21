@@ -1,5 +1,5 @@
 # Utilizar una imagen de Alpine Linux v3.14 como base
-FROM alpine:3.14
+FROM alpine:3.18
 
 # Instalar el cliente de MySQL
 RUN apk add --no-cache mysql-client curl bash openssl gnupg && \

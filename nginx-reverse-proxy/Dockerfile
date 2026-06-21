@@ -1,5 +1,5 @@
 # Utiliza la imagen base de Alpine con Nginx
-FROM nginx:alpine
+FROM nginx:1.25-alpine
 
 # Copia el archivo de configuración personalizado al contenedor
 COPY nginx.conf /etc/nginx/conf.d/default.conf

@@ -1,5 +1,5 @@
 # Usa la imagen base con soporte multiarch
-FROM --platform=$BUILDPLATFORM ubuntu:23.10
+FROM --platform=$BUILDPLATFORM ubuntu:26:04
 USER root
 
 # Instala los paquetes necesarios

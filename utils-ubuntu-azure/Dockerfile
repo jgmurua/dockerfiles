@@ -1,4 +1,4 @@
-FROM ubuntu:23.10
+FROM ubuntu:26:04
 USER root
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/Argentina/Buenos_Aires
