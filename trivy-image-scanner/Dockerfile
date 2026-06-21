@@ -1,4 +1,4 @@
-FROM ubuntu:26:04
+FROM ubuntu:26.04
 USER root
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \

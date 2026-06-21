@@ -1,5 +1,5 @@
 # Usa Ubuntu 23.10 como base
-FROM ubuntu:26:04
+FROM ubuntu:26.04
 
 # Instala los paquetes necesarios
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \

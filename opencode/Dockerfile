@@ -32,7 +32,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 # tfswitch building stage end
 
 
-FROM ubuntu:26:04
+FROM ubuntu:26.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 

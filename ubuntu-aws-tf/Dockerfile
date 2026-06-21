@@ -24,7 +24,7 @@ RUN mkdir -p /out && \
     go build -trimpath -ldflags="-s -w" -o /out/tfswitch .
 
 
-FROM ubuntu:26:04
+FROM ubuntu:26.04
 
 USER root
 

@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 set -e
-
-docker build -t opencode-devops .
+docker build -t opencode-cli .

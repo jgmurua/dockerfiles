@@ -1,5 +1,5 @@
 # Usa la imagen base con soporte multiarch
-FROM ubuntu:26:04
+FROM ubuntu:26.04
 USER root
 
 ENV TEAMCITY_AGENT_NAME=my_agent_name

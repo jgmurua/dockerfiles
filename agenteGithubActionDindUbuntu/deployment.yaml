@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: github-action-container
-          image: jgmurua/agentegithubactiondindubuntu:26:04atest  
+          image: jgmurua/agentegithubactiondindubuntu:26.04atest  
           env:
             - name: GH_TOKEN
               value: '***'  # Tu token de GitHub

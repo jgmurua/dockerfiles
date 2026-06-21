@@ -1,5 +1,5 @@
 # Utilizamos una imagen base de Ubuntu
-FROM ubuntu:26:04
+FROM ubuntu:26.04
 ARG country_code="AR"
 ARG country="Argentina"
 ARG statename="Buenos Aires"

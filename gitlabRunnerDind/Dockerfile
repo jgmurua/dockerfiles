@@ -1,5 +1,5 @@
 # Usa Ubuntu 24.10 como base
-FROM --platform=$BUILDPLATFORM ubuntu:26:04
+FROM --platform=$BUILDPLATFORM ubuntu:26.04
 
 # Establece el usuario root y variables de entorno
 USER root
@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Etiquetas (Labels)
 LABEL Author=""
-LABEL BaseImage="ubuntu:26:04"
+LABEL BaseImage="ubuntu:26.04"
 
 # Instala los paquetes necesarios, incluyendo dumb-init
 RUN apt-get update && \

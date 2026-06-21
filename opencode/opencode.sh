@@ -6,4 +6,4 @@ docker run --rm -it \
   -v "$HOME/.aws:/root/.aws:ro" \
   -e AWS_PROFILE \
   -w /workspace \
-  opencode-platform
+  opencode-cli
