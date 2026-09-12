@@ -1,90 +1,42 @@
-# helm3 building stage begin
-FROM golang:1.26.4-bookworm AS helm-builder
-
-ARG HELM_VERSION=v4.0.0
-
-RUN git clone \
-    --depth 1 \
-    --branch ${HELM_VERSION} \
-    https://github.com/helm/helm.git \
-    /src
-
-WORKDIR /src
-
-RUN make build
-
-RUN cp bin/helm /out-helm
-# helm3 building stage end
-
-# tfswitch building stage begin
-FROM golang:1.26.4-bookworm AS tfswitch-builder
-
-ARG TFSWITCH_VERSION=v1.19.0
-
-RUN git clone --depth 1 --branch ${TFSWITCH_VERSION} \
-    https://github.com/warrensbox/terraform-switcher.git /src
-
-WORKDIR /src
-
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -trimpath -ldflags="-s -w" -o /out/tfswitch .
-
-# tfswitch building stage end
-
-
-FROM ubuntu:26.04
+FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y --no-install-recommends \
-    bash \
-    ca-certificates \
-    curl \
-    unzip \
-    git \
-    gnupg \
-    lsb-release \
-    sudo \
-    jq \
-    python3 \
-    python3-pip \
-    nodejs \
-    npm \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y --no-install-recommends \
+        bash \
+        ca-certificates \
+        curl \
+        git \
+        jq \
+        openssh-client \
+        tar \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g opencode-ai
+# Install OpenCode using the official installer. No secrets are baked into the image.
+ENV HOME=/opt/opencode
+RUN mkdir -p /opt/opencode \
+    && curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path \
+    && ln -s /opt/opencode/.opencode/bin/opencode /usr/local/bin/opencode \
+    && opencode --version
 
-#tfswitch
-COPY --from=tfswitch-builder /out/tfswitch /usr/local/bin/tfswitch
-
-RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip" \
-    && unzip /tmp/awscliv2.zip -d /tmp \
-    && /tmp/aws/install \
-    && rm -rf /tmp/aws /tmp/awscliv2.zip
-
-ARG KUBECTL_VERSION=v1.36.0
-
-RUN curl -fsSL -o /usr/local/bin/kubectl \
-    "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" \
- && chmod +x /usr/local/bin/kubectl \
- && kubectl version --client=true
-
-COPY --from=helm-builder /out-helm /usr/local/bin/helm
-
-RUN mkdir -p /root/.config/opencode/skills /root/.config/opencode
-
-COPY skills/platform-engineer/ /root/.config/opencode/skills/platform-engineer/
-COPY opencode.json /root/.config/opencode/opencode.json
-
-RUN test -f /root/.config/opencode/skills/platform-engineer/SKILL.md \
-    && chmod +x /root/.config/opencode/skills/platform-engineer/scripts/*.sh || true
+RUN groupadd --gid 1000 opencode \
+    && useradd --uid 1000 --gid 1000 --create-home --home-dir /home/opencode --shell /bin/bash opencode \
+    && mkdir -p /workspace /home/opencode/.config /home/opencode/.local/share /home/opencode/.cache /home/opencode/.local/state \
+    && chown -R opencode:opencode /workspace /home/opencode
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
+
+ENV HOME=/home/opencode \
+    XDG_CONFIG_HOME=/home/opencode/.config \
+    XDG_DATA_HOME=/home/opencode/.local/share \
+    XDG_CACHE_HOME=/home/opencode/.cache \
+    XDG_STATE_HOME=/home/opencode/.local/state \
+    OPENCODE_CONFIG_DIR=/home/opencode/.config/opencode \
+    GIT_CONFIG_GLOBAL=/home/opencode/.config/opencode/gitconfig
 
 WORKDIR /workspace
-
+USER opencode
 ENTRYPOINT ["docker-entrypoint.sh"]
+CMD []
